@@ -1,6 +1,6 @@
 [submodule "api"]
  path = api
- url = ./api
+ url = https://github.com/k-nasu/jwt-login-authentication-with-railsapi-nuxtjs_api
 [submodule "front"]
  path = front
- url = ./front
+ url = https://github.com/k-nasu/jwt-login-authentication-with-railsapi-nuxtjs_front
