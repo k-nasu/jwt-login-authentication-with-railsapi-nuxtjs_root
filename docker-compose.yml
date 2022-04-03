@@ -2,6 +2,7 @@ version: '3.7'
 
 services: 
   db:
+    platform: linux/x86_64
     image: mysql:5.7
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     environment:
@@ -10,23 +11,29 @@ services:
       MYSQL_PASSWORD: $MYSQL_PASSWORD
     volumes:
       - "mysql-db:/var/lib/mysql"
+      
   api:
     tty: true
+    stdin_open: true
     depends_on:
       - db
     build:
       context: ./api/
       dockerfile: Dockerfile
+    environment:
+      API_DOMAIN: "localhost:$FRONT_PORT"
     ports:
       - "$API_PORT:3000"
     volumes:
       - "./api:/app"
     command: rails server -b 0.0.0.0
+
   front:
     build:
       context: ./front
       args:
         WORKDIR: $WORKDIR
+        API_URL: "http://localhost:$API_PORT"
     # コンテナで実行したいコマンド(CMD)
     command: yarn run dev
     volumes:
